@@ -1,0 +1,19 @@
+To create .so file firt create .o file =>
+1. mohib@pmohibkh:/var/c_cpp_progs/LinkedLists$ gcc -c -fPIC -I/var/c_cpp_progs/inc LLBasic.c -o LLBasic.o
+2. mohib@pmohibkh:/var/c_cpp_progs/LinkedLists$ gcc -shared -o libLLBasic.so LLBasic.o
+
+After that link .so file as shown below:
+mohib@pmohibkh:/var/c_cpp_progs/LinkedLists$ gcc -L. -o LinkedListMain LinkedListMain.c -lLLBasic -Wl,-rpath,.
+
+Link with the Shared Library if .so file path is different(not cur directory)
+$ gcc -c -fPIC mylib.c -o mylib.o
+$ gcc -shared -o /path/to/your/libs/libmylib.so mylib.o
+$ gcc -o main main.c -L/path/to/your/libs -lmylib -Wl,-rpath,/path/to/your/libs
+
+mohib@pmohibkh:/var/c_cpp_progs/LinkedLists$ ls
+LLBasic  LLBasic.c  LLBasic.h  LLBasic.o  LinkedListMain  LinkedListMain.c  libLLBasic.so
+
+[export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH] Not needed if (-Wl,-rpath,.) is used during compilation 
+
+
+To Run => mohib@pmohibkh:/var/c_cpp_progs/LinkedLists$ ./LinkedListMain
