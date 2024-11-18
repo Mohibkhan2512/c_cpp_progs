@@ -3,6 +3,30 @@
 
 #define min(a, b) (a <= b ? a : b)
 
+int minPathToReachLastRowBottomUp(int triangle[][4], int totalRows, int totalCols, int** memArr){
+    for(int i = 0; i < totalRows; i++){
+        for (int j = 0; j < totalCols; j++) {
+            memArr[i][j] = 0;
+        }
+    }
+
+    int down, diag;
+    for(int i = totalRows-1; i >= 0; i--){
+        for (int j = i; j >= 0; j--) {
+            if(i == totalRows - 1) {
+                // printf("i, j :>> %d, %d\n", i, j);
+                memArr[i][j] = triangle[i][j]; 
+                continue;
+            }
+            down = triangle[i][j] + memArr[i+1][j];
+            diag = triangle[i][j] + memArr[i+1][j+1];
+            memArr[i][j] = min(down, diag);
+        }
+    }
+
+    return memArr[0][0];
+}
+
 int minPathToReachLastRow(int triangle[][4], int lastRow, int row, int col, int** memArr){
     if(row == lastRow) return triangle[lastRow][col];
 
@@ -29,7 +53,8 @@ int main (int argc, char *argv[]) {
         }
     }
 
-    int minPath = minPathToReachLastRow(triangle, totalRows-1, 0, 0, memArr);
+    // int minPath = minPathToReachLastRow(triangle, totalRows-1, 0, 0, memArr);
+    int minPath = minPathToReachLastRowBottomUp(triangle, totalRows, totalCols, memArr);
 
     printf("minPath :>> %d\n", minPath);
 
