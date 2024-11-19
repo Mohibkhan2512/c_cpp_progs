@@ -6,7 +6,33 @@
 
 #define max(a, b) (a >= b ? a : b)
 
-int maxSumPath(int grid[][M], int row, int col, int** memArr){
+int maxSumPathBottomUp(int grid[][M], int** memArr) {
+    for(int i = N-1; i >= 0; i--) {
+        for(int j = M-1; j >= 0; j--) {
+            int leftDiag = INT_MIN; int rightDiag = INT_MIN;
+            if (i == N-1) {
+                 memArr[i][j] = grid[i][j]; continue;
+            }
+            int down = grid[i][j] + memArr[i+1][j];
+            if (j > 0) {
+                leftDiag = grid[i][j] + memArr[i+1][j-1];
+            } 
+            if (j < M-1) {
+                rightDiag = grid[i][j] + memArr[i+1][j+1]; 
+            }
+            memArr[i][j] = max(down, max(leftDiag, rightDiag));
+        }
+    }
+
+    int maxSum = memArr[0][0];
+    for (int j = 0; j < M; j++) {
+        maxSum = max(maxSum, memArr[0][j]);
+    }
+    
+    return maxSum;
+}
+
+int maxSumPath(int grid[][M], int row, int col, int** memArr) {
     // printf("grid[row][col], row, col :>> %d, %d, %d\n", grid[row][col], row, col);
 
     if (row == N-1) {
@@ -39,12 +65,15 @@ int main (int argc, char *argv[]) {
         }
     }
     
-    int maxPathSum = INT_MIN, curPathSum = INT_MIN;
-    for(int i = 0; i < M; i++){
-        curPathSum = maxSumPath(grid, 0, i, memArr);
-        maxPathSum = max(curPathSum, maxPathSum);
-        // printf("maxPathSum, curPathSum :>> %d, %d\n", maxPathSum, curPathSum);
-    }
+    /* for memoization */
+    // int maxPathSum = INT_MIN, curPathSum = INT_MIN;
+    // for(int i = 0; i < M; i++){
+    //     curPathSum = maxSumPath(grid, 0, i, memArr);
+    //     maxPathSum = max(curPathSum, maxPathSum);
+    //     // printf("maxPathSum, curPathSum :>> %d, %d\n", maxPathSum, curPathSum);
+    // }
+
+    int maxPathSum = maxSumPathBottomUp(grid, memArr);
 
     printf("maxPathSum:>> %d\n", maxPathSum);
 
@@ -61,8 +90,6 @@ int main (int argc, char *argv[]) {
         free(memArr[i]);
     }
     free(memArr);
-
-
 
     return EXIT_SUCCESS;
 }
