@@ -47,5 +47,11 @@ int main (int argc, char *argv[]) {
 
     printf("Min insertions to make the string palindrome :>> %d\n", (stringLen-maxLenghtPalindromeSubStr));
 
+    // Free allocated memory
+    for (int i = 0; i < stringLen; i++) {
+        free(memArr[i]);
+    }
+    free(memArr);
+
     return EXIT_SUCCESS;
 }
