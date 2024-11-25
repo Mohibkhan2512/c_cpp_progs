@@ -29,21 +29,11 @@ void floodFill(vector<vector<char>>& graph, vector<vector<char>>& res, int x, in
     int m = graph[0].size();
     vector<vector<int>> visited(n, vector<int>(m, 0));
     int initClr = res[x][y];
-    // res[x][y] = newClr;
-    // visited[x][y] = 1;
 
     vector<int> drow = {-1, 0, 1, 0};
     vector<int> dcol = {0, 1, 0, -1};
 
     DFS(graph, res, visited, x, y, newClr, initClr, drow, dcol);
-
-
-    // for (int i = 0; i < n; i++) {
-    //     for (int j = 0; j < m; j++) {
-    //         if (!visited[i][j] && graph[i][j] == initClr) {
-    //         }
-    //     }
-    // }
 
 }
 
