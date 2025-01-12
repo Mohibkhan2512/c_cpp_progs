@@ -13,6 +13,7 @@ public:
     void func(int index, string s, vector<string> &path, vector<vector<string>> &res) {
         if(index == s.size()) {
             res.push_back(path);
+            path.clear();
             return;
         }
         
@@ -21,7 +22,7 @@ public:
                 path.push_back(s.substr(index, i-index+1));
                 cout << "pushing :>> " << path.back() << "\n";
                 func(i+1, s, path, res);
-                cout << "popping :>> " << path.back() << "\n";
+                // cout << "popping :>> " << path.back() << "\n";
                 path.pop_back();
             }
         }
