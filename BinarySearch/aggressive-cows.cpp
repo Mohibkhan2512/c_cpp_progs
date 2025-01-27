@@ -6,36 +6,39 @@ using namespace std;
 
 bool canWePlace(vector<int> &stalls, int dist, int cows) {
     int n = stalls.size(); //size of array
-    int toBePlacedCows = cows;
+    int toBePlacedCows = 1; // first is placed at stalls[0]
     int lastCowPlacedAt = stalls[0];
 
     for (int curIdx = 1; curIdx < n; curIdx++) {
         if (stalls[curIdx] - lastCowPlacedAt >= dist) {
-            toBePlacedCows--;
+            toBePlacedCows++;
             lastCowPlacedAt = stalls[curIdx];
-            if (toBePlacedCows == 0) {
-                cout << "Possible for dist :>> " << dist << "\n";
+            if (toBePlacedCows == cows) {
                 return true;
             }
         }
     }
     return false;
 }
+
 int aggressiveCows(vector<int> &stalls, int k) {
     int n = stalls.size(); //size of array
     //sort the stalls[]:
     sort(stalls.begin(), stalls.end());
 
-    int low = 1, high = stalls[n - 1] - stalls[0];
+    int low = 1, high = stalls[n - 1] - stalls[0], ans;
     //apply binary search:
     while (low <= high) {
         int mid = (low + high) / 2;
         if (canWePlace(stalls, mid, k) == true) {
+            ans = mid;
             low = mid + 1;
         }
-        else high = mid - 1;
+        else {
+            high = mid - 1;
+        }
     }
-    return high;
+    return ans;
 }
 
 int main()
